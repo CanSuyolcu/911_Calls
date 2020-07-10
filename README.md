@@ -12,26 +12,31 @@ For this capstone project I will be analyzing some 911 call data from Kaggle. Th
 - addr: String variable, Address
 - String variable, Dummy variable (always 1)
 ## Data and Setup
-Firstly I import numpy and pandas
+Firstly we will import numpy and pandas.
 ```python
 import numpy as np
 import pandas as pd
 ```
-Now I import visualization libraries and set %matplotlib inline.
+Now we import visualization libraries and set %matplotlib inline.
 ```python
 import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set_style('whitegrid')
 %matplotlib inline
 ```
-Now I  read in the csv file as a dataframe called df
+Now we read in the csv file as a dataframe called df.
 ```python
 df = pd.read_csv('911.csv')
 ```
-Now I can check the informations about it
+Now we can check the informations about it.
 ```python
 df.info()
 ```
-![image](https://user-images.githubusercontent.com/66487971/87164397-6b28a280-c2d1-11ea-8306-6af45ea05a61.png)
+<img src= "https://user-images.githubusercontent.com/66487971/87164397-6b28a280-c2d1-11ea-8306-6af45ea05a61.png" width = 300>
+We can check the head of the dataframe for a quick grasp.
+```python
+df.head(3)
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87165507-ea6aa600-c2d2-11ea-967d-01efb7f81627.JPG" width = 800>
 
 

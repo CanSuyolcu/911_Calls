@@ -52,5 +52,4 @@ and now I check the head of to get some more information about it
 ```python
 df.head(3)
 ```
-(image1.JPG)
 

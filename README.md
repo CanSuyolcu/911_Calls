@@ -34,9 +34,6 @@ df.info()
 ```
 <img src= "https://user-images.githubusercontent.com/66487971/87164397-6b28a280-c2d1-11ea-8306-6af45ea05a61.png" width = 300>
 We can check the head of the dataframe for a quick grasp.
-```python
-df.head(3)
-```
-<img src= "https://user-images.githubusercontent.com/66487971/87165507-ea6aa600-c2d2-11ea-967d-01efb7f81627.JPG" width = 800>
+
 
 

@@ -1,5 +1,5 @@
 # 911_Calls
-This is an exercise project in order to practice my Pandas, NumPy, Seaborn and Matplotlib skills 
+This is an exercise project in order to practice my Pandas, NumPy, Seaborn and Matplotlib skills in Python.
 
 For this capstone project I will be analyzing some 911 call data from Kaggle. The data contains the following fields:
 - lat : String variable, Latitude
@@ -89,9 +89,9 @@ sns.countplot(x='Day of Week',data=df,hue='Reason',palette='viridis')
 # To relocate the legend
 plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
-<img src= "https://user-images.githubusercontent.com/66487971/87168177-c1e4ab00-c2d6-11ea-9d0b-c35bd5e5b12b.png" width = 600>
+<img src= "https://user-images.githubusercontent.com/66487971/87168177-c1e4ab00-c2d6-11ea-9d0b-c35bd5e5b12b.png" width = 500>
 
-Now we do the same for Month
+Now we do the same for Month.
 
 ```python
 sns.countplot(x='Month',data=df,hue='Reason',palette='viridis')
@@ -100,7 +100,7 @@ sns.countplot(x='Month',data=df,hue='Reason',palette='viridis')
 plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/87168361-0c662780-c2d7-11ea-9893-586aec71d6aa.png" width = 600>
+<img src= "https://user-images.githubusercontent.com/66487971/87168361-0c662780-c2d7-11ea-9893-586aec71d6aa.png" width = 500>
 
 We notice that it was missing some Months, now we will fill in this information by plotting a simple line plot that fills in the missing months.
 
@@ -108,21 +108,21 @@ We notice that it was missing some Months, now we will fill in this information 
 byMonth = df.groupby('Month').count()
 byMonth.head()
 ```
-<img src= "https://user-images.githubusercontent.com/66487971/87168595-6bc43780-c2d7-11ea-9c84-780e699fef5e.png" width = 600>
+<img src= "https://user-images.githubusercontent.com/66487971/87168595-6bc43780-c2d7-11ea-9c84-780e699fef5e.png" width = 500>
 
  Now we create a simple plot off of the dataframe indicating the count of calls per month.
  
  ```python
  byMonth['twp'].plot()
  ```
- <img src= "https://user-images.githubusercontent.com/66487971/87168734-9c0bd600-c2d7-11ea-984f-25949d26c02a.png" width = 600>
+ <img src= "https://user-images.githubusercontent.com/66487971/87168734-9c0bd600-c2d7-11ea-984f-25949d26c02a.png" width = 500>
  
   Now we will use seaborn's lmplot() to create a linear fit on the number of calls per month. 
   
   ```python
   sns.lmplot(x='Month',y='twp',data=byMonth.reset_index())
   ```
-  <img src= "https://user-images.githubusercontent.com/66487971/87168893-d4abaf80-c2d7-11ea-9400-99c4f4d413a4.png" width = 600>
+  <img src= "https://user-images.githubusercontent.com/66487971/87168893-d4abaf80-c2d7-11ea-9400-99c4f4d413a4.png" width = 500>
   
   We create a new column called 'Date' that contains the date from the timeStamp column and groupby this Date column with the count() aggregate and create a plot of counts of 911 calls.
   
@@ -132,7 +132,7 @@ byMonth.head()
 plt.tight_layout()
 ```
 
-<img src= "https://user-images.githubusercontent.com/66487971/87169082-205e5900-c2d8-11ea-865a-137e5b4031d2.png" width = 600>
+<img src= "https://user-images.githubusercontent.com/66487971/87169082-205e5900-c2d8-11ea-865a-137e5b4031d2.png" width = 500>
 
 Now we will recreate this plot but create 3 separate plots with each plot representing a Reason for the 911 call.
 
@@ -141,7 +141,76 @@ df[df['Reason']=='Traffic'].groupby('Date').count()['twp'].plot()
 plt.title('Traffic')
 plt.tight_layout()
 ```
-<img src= "https://user-images.githubusercontent.com/66487971/87169346-82b75980-c2d8-11ea-889b-d42ee988332b.png" width = 600>
+<img src= "https://user-images.githubusercontent.com/66487971/87169346-82b75980-c2d8-11ea-889b-d42ee988332b.png" width = 500>
+
+```python
+df[df['Reason']=='Fire'].groupby('Date').count()['twp'].plot()
+plt.title('Fire')
+plt.tight_layout()
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87170171-a929c480-c2d9-11ea-8ae1-d919614b5f11.png" width = 500>
+
+```python
+df[df['Reason']=='EMS'].groupby('Date').count()['twp'].plot()
+plt.title('EMS')
+plt.tight_layout()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/87170297-d37b8200-c2d9-11ea-9ff6-a6de191c3765.png" width = 500>
+
+ Now we will create heatmaps with seaborn and our data. We'll first need to restructure the dataframe so that the columns become the Hours and the Index becomes the Day of the Week.
+ 
+ ```python
+ dayHour = df.groupby(by=['Day of Week','Hour']).count()['Reason'].unstack()
+dayHour.head()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/87170562-29e8c080-c2da-11ea-8adb-05bdc54a0610.png" width = 800>
+
+Now we create a HeatMap using this new DataFrame.
+
+```python
+plt.figure(figsize=(12,6))
+sns.heatmap(dayHour,cmap='viridis')
+```
+<img src= "(https://user-images.githubusercontent.com/66487971/87170766-716f4c80-c2da-11ea-8f71-9c599be5201f.png" width = 500>
+
+Now we create a clustermap using this DataFrame.
+
+```python
+sns.clustermap(dayHour,cmap='viridis')
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87171290-26096e00-c2db-11ea-9fe5-17ba8be4cd00.png" width = 500>
+
+Now we repeat these same plots and operations, for a DataFrame that shows the Month as the column.
+
+```python
+dayMonth = df.groupby(by=['Day of Week','Month']).count()['Reason'].unstack()
+dayMonth.head()
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87171453-5f41de00-c2db-11ea-9393-d21fe8414dee.png" width = 800>
+
+```python
+plt.figure(figsize=(12,6))
+sns.heatmap(dayMonth,cmap='viridis')
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87171593-8bf5f580-c2db-11ea-99f4-3d7bdd87cb3d.png" width = 500>
+
+```python
+sns.clustermap(dayMonth,cmap='viridis')
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87171684-b182ff00-c2db-11ea-9ea5-5ff4985feda8.png" width = 500>
+
+### This concludes my project here. Thanks for reading all the way through.
+
+
+
+
+
+
+
+
+
 
   
 

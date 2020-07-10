@@ -1,5 +1,5 @@
 # 911_Calls
-This is an exercise project for my Pandas, NumPy, Seaborn and Matplotlib skills 
+This is an exercise project in order to practice my Pandas, NumPy, Seaborn and Matplotlib skills 
 
 For this capstone project I will be analyzing some 911 call data from Kaggle. The data contains the following fields:
 - lat : String variable, Latitude
@@ -34,6 +34,121 @@ df.info()
 ```
 <img src= "https://user-images.githubusercontent.com/66487971/87164397-6b28a280-c2d1-11ea-8306-6af45ea05a61.png" width = 300>
 We can check the head of the dataframe for a quick grasp.
+
+```python
+df.head(3)
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87165507-ea6aa600-c2d2-11ea-967d-01efb7f81627.JPG" width = 800>
+
+## Creating new features
+
+In the titles column there are "Reasons/Departments" specified before the title code. These are EMS, Fire, and Traffic. We are going to use .apply() with a custom lambda expression to create a new column called "Reason" that contains this string value.
+
+```python
+df['Reason'] = df['title'].apply(lambda title: title.split(':')[0])
+```
+
+Now we can check  the most common Reason for a 911 call based off of this new column.
+
+```python
+df['Reason'].value_counts()
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87167251-5cdc8580-c2d5-11ea-9948-8c1b1c30b287.png" width = 250>
+
+Now we will start using Seaborn to create a countplot of 911 calls by Reason.
+
+```python
+sns.countplot(x='Reason',data=df,palette='viridis')
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/87167454-a5943e80-c2d5-11ea-8854-5aee3c5641be.png" width = 500>
+
+We will now use pd.to_datetime to convert the column from strings to DateTime objects.
+
+```python
+df['timeStamp'] = pd.to_datetime(df['timeStamp'])
+```
+
+Now that the timestamp column are actually DateTime objects, we can use .apply() to create 3 new columns called Hour, Month, and Day of Week.
+```python
+df['Hour'] = df['timeStamp'].apply(lambda time: time.hour)
+df['Month'] = df['timeStamp'].apply(lambda time: time.month)
+df['Day of Week'] = df['timeStamp'].apply(lambda time: time.dayofweek)
+```
+We will use the .map() with this dictionary to map the actual string names to the day of the week.
+
+```python
+dmap = {0:'Mon',1:'Tue',2:'Wed',3:'Thu',4:'Fri',5:'Sat',6:'Sun'}
+df['Day of Week'] = df['Day of Week'].map(dmap)
+```
+Now we use seaborn to create a countplot of the Day of Week column with the hue based off of the Reason column.
+
+```python
+sns.countplot(x='Day of Week',data=df,hue='Reason',palette='viridis')
+
+# To relocate the legend
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87168177-c1e4ab00-c2d6-11ea-9d0b-c35bd5e5b12b.png" width = 600>
+
+Now we do the same for Month
+
+```python
+sns.countplot(x='Month',data=df,hue='Reason',palette='viridis')
+
+# To relocate the legend
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/87168361-0c662780-c2d7-11ea-9893-586aec71d6aa.png" width = 600>
+
+We notice that it was missing some Months, now we will fill in this information by plotting a simple line plot that fills in the missing months.
+
+```python
+byMonth = df.groupby('Month').count()
+byMonth.head()
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87168595-6bc43780-c2d7-11ea-9c84-780e699fef5e.png" width = 600>
+
+ Now we create a simple plot off of the dataframe indicating the count of calls per month.
+ 
+ ```python
+ byMonth['twp'].plot()
+ ```
+ <img src= "https://user-images.githubusercontent.com/66487971/87168734-9c0bd600-c2d7-11ea-984f-25949d26c02a.png" width = 600>
+ 
+  Now we will use seaborn's lmplot() to create a linear fit on the number of calls per month. 
+  
+  ```python
+  sns.lmplot(x='Month',y='twp',data=byMonth.reset_index())
+  ```
+  <img src= "https://user-images.githubusercontent.com/66487971/87168893-d4abaf80-c2d7-11ea-9400-99c4f4d413a4.png" width = 600>
+  
+  We create a new column called 'Date' that contains the date from the timeStamp column and groupby this Date column with the count() aggregate and create a plot of counts of 911 calls.
+  
+  ```python
+  df['Date']=df['timeStamp'].apply(lambda t: t.date())
+  df.groupby('Date').count()['twp'].plot()
+plt.tight_layout()
+```
+
+<img src= "https://user-images.githubusercontent.com/66487971/87169082-205e5900-c2d8-11ea-865a-137e5b4031d2.png" width = 600>
+
+Now we will recreate this plot but create 3 separate plots with each plot representing a Reason for the 911 call.
+
+```python
+df[df['Reason']=='Traffic'].groupby('Date').count()['twp'].plot()
+plt.title('Traffic')
+plt.tight_layout()
+```
+<img src= "https://user-images.githubusercontent.com/66487971/87169346-82b75980-c2d8-11ea-889b-d42ee988332b.png" width = 600>
+
+  
+
+
+
+
+
 
 
 

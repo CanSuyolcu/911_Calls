@@ -32,7 +32,6 @@ Now I can check the informations about it
 ```python
 df.info()
 ```
-<class 'pandas.core.frame.DataFrame'>
-RangeIndex: 99492 entries, 0 to 99491
-Data columns (total 9 columns):
+![image](https://user-images.githubusercontent.com/66487971/87164397-6b28a280-c2d1-11ea-8306-6af45ea05a61.png)
+
 

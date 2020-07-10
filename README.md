@@ -35,21 +35,4 @@ df.info()
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 99492 entries, 0 to 99491
 Data columns (total 9 columns):
- #   Column     Non-Null Count  Dtype  
----  ------     --------------  -----  
- 0   lat        99492 non-null  float64
- 1   lng        99492 non-null  float64
- 2   desc       99492 non-null  object 
- 3   zip        86637 non-null  float64
- 4   title      99492 non-null  object 
- 5   timeStamp  99492 non-null  object 
- 6   twp        99449 non-null  object 
- 7   addr       98973 non-null  object 
- 8   e          99492 non-null  int64  
-dtypes: float64(3), int64(1), object(5)
-memory usage: 6.8+ MB
-and now I check the head of to get some more information about it
-```python
-df.head(3)
-```
 
